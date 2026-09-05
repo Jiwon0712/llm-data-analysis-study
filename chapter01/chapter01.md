@@ -93,38 +93,63 @@ https://github.com/Jiwon0712/llm-data-analysis-study/blob/main/chapter01/chapter
 
 - [ ] `customers.csv`
 - [ ] `products.csv`
-- [ ] `orders.csv`
-- [ ] `order_items.csv`
+- [x] `orders.csv`
+- [x] `order_items.csv`
 
 ### 필요한 컬럼 후보
 
 | 파일 | 필요한 컬럼 | 필요한 이유 |
 | --- | --- | --- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| orders.csv | order_id, order_date, status | 주문 날짜별 집계 및 완료 주문 필터링 |
+| order_items.csv | order_id, quantity, unit_price | 주문별 실제 매출 금액 계산 (quantity × unit_price) |
 
 ### 데이터 연결 관계
 
 ```text
 필요한 PK/FK 관계 또는 파일 연결 관계를 작성하세요.
+
+orders.csv의 order_id (PK) ↔ order_items.csv의 order_id (FK)
+두 테이블을 order_id 기준으로 merge하여 
+주문 날짜(orders)와 매출 금액(order_items)을 한 테이블에서 다룰 수 있게 함
 ```
 
 ### 결과 관찰
 
 질문에 답하기 위해 어떤 데이터가 필요하다는 사실을 확인했는지 작성하세요.
 
+"월별 전체 매출액 추세"라는 질문에 답하려면, orders.csv만으로는 
+매출 금액을 알 수 없다는 것을 확인했다. orders.csv에는 주문 날짜와 
+상태(status)만 있고, 실제 판매 금액은 order_items.csv의 
+quantity(수량)와 unit_price(단가)를 곱해야 계산할 수 있었다.
+또한 orders.csv의 status 값에 completed, cancelled, refunded 등이
+섞여 있어, 매출 집계 시 완료된 주문만 걸러내야 한다는 점도 확인했다.
+
 ### 나의 해석과 판단
 
 현재 데이터만으로 질문에 답할 수 있는지 판단하세요.
+
+orders.csv와 order_items.csv 두 파일을 order_id 기준으로 결합(merge)해야
+비로소 "날짜별 실제 매출 금액"이라는 하나의 지표를 만들 수 있었다.
+현재 보유한 두 데이터만으로 월별 매출 추세 질문에는 충분히 답할 수 있지만,
+"왜 감소했는가"라는 원인 분석까지 하려면 customers.csv, products.csv도
+함께 활용해 고객층이나 상품군별로 나눠 봐야 한다고 판단했다.
 
 ### 업무·분석적 의미
 
 질문과 데이터 구조를 먼저 연결하는 것이 왜 중요한지 작성하세요.
 
+질문에 어떤 데이터가 필요한지 먼저 확인하지 않으면, 존재하지 않는 
+컬럼을 가정하고 코드를 짜다가 시간을 낭비하거나, 잘못된 컬럼(예: 
+취소된 주문 포함)을 그대로 매출로 오인해 잘못된 결론을 낼 위험이 있다.
+데이터 구조를 먼저 파악하면 분석 설계 단계에서 오류를 미리 줄일 수 있다.
+
 ### 한계와 추가 확인 사항
 
 실제 컬럼 존재 여부, 타입, 결측 등 아직 확인하지 못한 부분을 작성하세요.
+
+아직 결측치(누락된 unit_price나 order_date 등)가 있는지 확인하지 
+못했다. 또한 status 값의 종류와 각각의 정확한 의미를 비즈니스 
+기준으로 명확히 확인할 필요가 있다. 예를 들어 refunded 항목을 매출로 인정할지 아닌지 등을 확인할 필요가 있다.
 
 ### Evidence
 
