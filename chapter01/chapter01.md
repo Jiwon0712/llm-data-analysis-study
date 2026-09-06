@@ -91,8 +91,8 @@ https://github.com/Jiwon0712/llm-data-analysis-study/blob/main/chapter01/chapter
 
 ### 필요한 데이터 파일
 
-- [ ] `customers.csv`
-- [ ] `products.csv`
+- [x] `customers.csv`
+- [x] `products.csv`
 - [x] `orders.csv`
 - [x] `order_items.csv`
 
@@ -100,56 +100,67 @@ https://github.com/Jiwon0712/llm-data-analysis-study/blob/main/chapter01/chapter
 
 | 파일 | 필요한 컬럼 | 필요한 이유 |
 | --- | --- | --- |
-| orders.csv | order_id, order_date, status | 주문 날짜별 집계 및 완료 주문 필터링 |
-| order_items.csv | order_id, quantity, unit_price | 주문별 실제 매출 금액 계산 (quantity × unit_price) |
+| orders.csv | order_id, order_date, order_status | 주문 날짜별 집계 및 완료 주문 필터링 |
+| order_items.csv | order_id, product_id, quantity, unit_price | 실제 매출 금액 계산 (quantity × unit_price) |
+| products.csv | product_id, category | 매출이 감소했다는 결과가 나왔을 경우, 상품 카테고리별 원인 분석  |
+| customers.csv | customer_id, age, city | 매출이 감소했다는 결과가 나왔을 경우, 고객층별(연령/지역) 원인 분 |
+
 
 ### 데이터 연결 관계
 
 ```text
 필요한 PK/FK 관계 또는 파일 연결 관계를 작성하세요.
 
-orders.csv의 order_id (PK) ↔ order_items.csv의 order_id (FK)
-두 테이블을 order_id 기준으로 merge하여 
-주문 날짜(orders)와 매출 금액(order_items)을 한 테이블에서 다룰 수 있게 함
+orders.order_id       ↔ order_items.order_id     (하나의 주문에 포함된 상품 내역 연결)
+orders.customer_id    ↔ customers.customer_id    (주문한 고객 정보 연결)
+order_items.product_id ↔ products.product_id     (구매한 상품의 카테고리/가격 정보 연결)
+
 ```
 
 ### 결과 관찰
 
 질문에 답하기 위해 어떤 데이터가 필요하다는 사실을 확인했는지 작성하세요.
 
-"월별 전체 매출액 추세"라는 질문에 답하려면, orders.csv만으로는 
-매출 금액을 알 수 없다는 것을 확인했다. orders.csv에는 주문 날짜와 
-상태(status)만 있고, 실제 판매 금액은 order_items.csv의 
-quantity(수량)와 unit_price(단가)를 곱해야 계산할 수 있었다.
-또한 orders.csv의 status 값에 completed, cancelled, refunded 등이
-섞여 있어, 매출 집계 시 완료된 주문만 걸러내야 한다는 점도 확인했다.
+"월별 전체 매출액 추세"라는 질문에 답하려면, orders.csv만으로는
+매출 금액을 알 수 없고 order_items.csv의 quantity와 unit_price를
+곱해야 한다는 것을 확인했다. 또한 orders.csv의 order_status에
+completed, cancelled, refunded가 섞여 있어 완료된 주문만 걸러야
+정확한 매출이 계산된다는 점도 확인했다. 나아가 매출 변화의 원인을
+상품군이나 고객층 단위로 분석하려면 products.csv, customers.csv까지
+연결해야 한다는 것을 파악했다.
 
 ### 나의 해석과 판단
 
 현재 데이터만으로 질문에 답할 수 있는지 판단하세요.
 
-orders.csv와 order_items.csv 두 파일을 order_id 기준으로 결합(merge)해야
-비로소 "날짜별 실제 매출 금액"이라는 하나의 지표를 만들 수 있었다.
-현재 보유한 두 데이터만으로 월별 매출 추세 질문에는 충분히 답할 수 있지만,
-"왜 감소했는가"라는 원인 분석까지 하려면 customers.csv, products.csv도
-함께 활용해 고객층이나 상품군별로 나눠 봐야 한다고 판단했다.
+"월별 매출 추세"라는 1차 질문은 orders.csv와 order_items.csv 두
+파일만으로 충분히 답할 수 있다. 실제로 order_id를 기준으로 두 파일을
+merge하여 완료 주문만 필터링한 뒤 월별로 집계해보니, 6월 이후
+지속적인 매출 감소 추세를 확인할 수 있었다. 다만 "왜 감소했는가"라는
+2차 질문에 답하려면 products.csv(카테고리)와 customers.csv(연령,
+지역)까지 연결해서 어떤 상품군·고객층에서 변화가 있었는지 추가로
+살펴봐야 한다.
 
 ### 업무·분석적 의미
 
 질문과 데이터 구조를 먼저 연결하는 것이 왜 중요한지 작성하세요.
 
-질문에 어떤 데이터가 필요한지 먼저 확인하지 않으면, 존재하지 않는 
-컬럼을 가정하고 코드를 짜다가 시간을 낭비하거나, 잘못된 컬럼(예: 
-취소된 주문 포함)을 그대로 매출로 오인해 잘못된 결론을 낼 위험이 있다.
-데이터 구조를 먼저 파악하면 분석 설계 단계에서 오류를 미리 줄일 수 있다.
+질문에 필요한 데이터와 그 연결 관계를 먼저 파악하지 않으면, 존재하지
+않는 컬럼을 가정하고 코드를 짜다가 시간을 낭비하거나(실제로 status
+컬럼 이름이 order_status인 것을 몰라 에러가 발생했었다), 취소/환불된
+주문을 매출로 잘못 포함시켜 왜곡된 결론을 낼 위험이 있다. 데이터
+구조를 먼저 확인하는 습관이 분석의 정확성과 효율성을 모두 높여준다.
 
 ### 한계와 추가 확인 사항
 
 실제 컬럼 존재 여부, 타입, 결측 등 아직 확인하지 못한 부분을 작성하세요.
 
-아직 결측치(누락된 unit_price나 order_date 등)가 있는지 확인하지 
-못했다. 또한 status 값의 종류와 각각의 정확한 의미를 비즈니스 
-기준으로 명확히 확인할 필요가 있다. 예를 들어 refunded 항목을 매출로 인정할지 아닌지 등을 확인할 필요가 있다.
+아직 결측치(누락된 unit_price, order_date 등)가 있는지는 확인하지
+못했다. 또한 order_status 값 중 refunded가 매출에서 완전히 제외되어야
+하는지, 부분 인정되는지는 회사의 기준을 별도로 확인해야 한다.
+현재는 customer_id, product_id를 활용한 원인 분석(상품군/고객층별
+매출 비중 변화)까지는 진행하지 않았고, 파일 구조와 연결 관계만
+확인한 단계다.
 
 ### Evidence
 
