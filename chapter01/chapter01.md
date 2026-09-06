@@ -250,8 +250,11 @@ customers.signup_date와 orders.order_date를 함께 봐야 하는데,
 
 ### Evidence
 
-![STEP 3 LLM Prompt와 응답](images/step03_llm_response.png)
+### Evidence
 
+![STEP 3 LLM Prompt](images/step03_llm_response_1.png)
+![STEP 3 LLM 답변 1](images/step03_llm_response_2.png)
+![STEP 3 LLM 답변 2](images/step03_llm_response_3.png)
 ---
 
 ## 4. LLM 제안 검증
