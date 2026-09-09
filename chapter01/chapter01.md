@@ -10,7 +10,7 @@
 - 이름: 황지원
 - GitHub ID: Jiwon0712
 - 개인 저장소명: `llm-data-analysis-study`
-- 작성일: 2026/09/05
+- 작성일: 2026/09/09
 - 사용한 LLM: Claude
 
 ### 최종 제출 URL
