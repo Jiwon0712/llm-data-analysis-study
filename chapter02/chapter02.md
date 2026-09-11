@@ -31,6 +31,9 @@ git --version
 
 ```text
 여기에 실제 결과를 작성하세요.
+
+Python 3.13.15
+git version 2.55.0.windows.5
 ```
 
 ### Evidence
