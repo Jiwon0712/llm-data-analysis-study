@@ -137,18 +137,25 @@ Notebook Path.cwd(): C:\Users\관리자\llm-data-analysis-study\notebooks
 
 터미널 Python과 Notebook Python이 같은 `.venv`인지 작성하세요.
 
+터미널에서 (Get-Command python).Source로 확인한 경로(.venv\Scripts\python.exe)와, 노트북 셀에서 sys.executable로 확인한 경로가 동일하게 .venv\Scripts\python.exe를 가리킨다. 또한 노트북 상단 커널 표시 역시 .venv (3.13.15.final.0)로 동일 버전을 나타내고 있어, 터미널과 Notebook이 같은 가상환경(.venv)을 사용하고 있음이 확인된다.
+
 ### 나의 해석과 판단
 
 둘이 다를 경우 어떤 문제가 발생할 수 있는지 작성하세요.
+
+터미널에서 가상환경을 활성화해서 패키지를 설치했는데, Notebook Python 커널의 가상환경이 다를 경우, 이 가상환경에 패키지가 설치되지 않는다. 즉 Notebook 셀에서 import하면 ModuleNotFoundError가 발생한다. 
 
 ### 업무·분석적 의미
 
 `ModuleNotFoundError` 같은 환경 오류를 줄이는 데 어떤 도움이 되는지 작성하세요.
 
+터미널과 Notebook의 Python 경로를 사전에 비교해두면, 나중에 import 오류가 발생했을 때 패키지 미설치 문제인지 커널 가상환경이 잘못 선택된 문제인지 빠르게 구분할 수 있다.
+
 ### 한계와 추가 확인 사항
 
 커널 이름만 보고 판단하면 안 되는 이유 등 추가 확인 사항을 작성하세요.
 
+VS Code에서 커널 이름이 .venv로 보인다고 해도, 실제로는 다른 경로의 Python이 연결되어 있을 수 있기 때문에 sys.executable 코드를 실행해서 커널을 확인하고, Python: Select Interpreter 창도 확인해야 한다. 
 ---
 
 ## 4. 샘플 데이터와 Notebook 실행 검증
