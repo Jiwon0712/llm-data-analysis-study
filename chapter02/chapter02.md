@@ -163,10 +163,10 @@ VS Code에서 커널 이름이 .venv로 보인다고 해도, 실제로는 다른
 ### 확인 결과
 
 ```text
-DATA_DIR 존재 여부:
-customers.csv 존재 여부:
-customers.shape:
-주요 컬럼:
+DATA_DIR 존재 여부: True
+customers.csv 존재 여부: True
+customers.shape: (150, 6)
+주요 컬럼: ['customer_id', 'name', 'gender', 'age', 'city', 'signup_date']
 ```
 
 ### Evidence
