@@ -44,37 +44,48 @@ git version 2.55.0.windows.5
 
 버전과 실행 가능 여부를 사실 위주로 작성하세요.
 
+Python 3.13.15 버전, git version 2.55.0.windows.5 결과가 나왔다. 
+코드는 오류 없이 실행되었다. 
+
 ### 나의 해석과 판단
 
 현재 환경이 수업 실습에 적합한지 판단하고 이유를 작성하세요.
+
+Python 3.13.15와 Git 2.55.0은 모두 최신 안정 버전이고, 버전 정보 2개 모두 오류 없이 출력되었으므로 정상적으로 설치 및 경로 설정이 완료된 상태이다. 실습에 적합하다고 판단된다.
 
 ### 업무·분석적 의미
 
 프로젝트 시작 전에 버전과 도구 상태를 확인하는 이유를 작성하세요.
 
+버전 정보를 기록해두면, 차후 문제가 발생하였을 때 실행 환경 차이 때문인지, 명령어 문제인지 구분할 수 있다. 또한 팀원들 혹은 강의자료상의 환경과 버전이 다를 경우 대응할 수 있다. 
+
 ### 한계와 추가 확인 사항
 
 아직 확인하지 못한 항목을 작성하세요.
 
+- 가상환경(venv 등) 생성 및 활성화 여부
+- 주요 라이브러리(pandas, numpy 등)의 설치 및 버전 호환성
+- pip 버전 및 패키지 관리자 정상 작동 여부
+- VS code와 python 인터프리 연동 여부
 ---
 
 ## 2. 저장소와 `.venv` 준비
 
 ### 수행 내용
 
-- [ ] 공식 Public 저장소 clone
-- [ ] 프로젝트 루트 확인
-- [ ] `.venv` 생성
-- [ ] `.venv` 활성화
-- [ ] `requirements.txt` 설치
+- [x] 공식 Public 저장소 clone
+- [x] 프로젝트 루트 확인
+- [x] `.venv` 생성
+- [x] `.venv` 활성화
+- [x] `requirements.txt` 설치
 
 ### 핵심 실행 결과
 
 ```text
-현재 프로젝트 경로:
-터미널 Python 실행 파일:
-가상환경 활성화 여부:
-패키지 설치 결과:
+현재 프로젝트 경로: c:\Users\관리자\llm-data-analysis-study\notebooks
+터미널 Python 실행 파일: C:\Users\관리자\llm-data-analysis-study\.venv\Scripts\python.exe
+가상환경 활성화 여부: 활성화됨 — 터미널 프롬프트에 (.venv) 표시
+패키지 설치 결과: pip install -r requirements.txt 실행 결과 에러 없이 정상 종료. 이미 설치됨.
 ```
 
 ### Evidence
@@ -85,18 +96,27 @@ git version 2.55.0.windows.5
 
 현재 `python`이 어떤 실행 파일을 가리키는지 작성하세요.
 
+현재 python은 .venv\Scripts\python.exe 을 가리키고 있다. 
+
+
 ### 나의 해석과 판단
 
 시스템 Python과 프로젝트 `.venv`를 분리하는 것이 왜 필요한지 자신의 말로 작성하세요.
+
+프로젝트 전용으로 격리된 환경을 이용하는 것이 중요하다. 시스템 python을 사용하면 다른 프로젝트에서 설치한 버전과 충돌하거나, requirements.txt에 명시된 버전과 달라서 오류가 발생할 수 있다. 격리된 환경인 .venv를 이용하면 다른 프로젝트에 영향을 주지 않고 실습을 진행할 수 있어 오류의 원인을 코드에서만 찾아도 되어 좋다. 
 
 ### 업무·분석적 의미
 
 다른 사람이 같은 프로젝트를 재실행할 때 가상환경이 주는 이점을 작성하세요.
 
+requirements.txt에 명시된 패키지와 버전을 설치하면 내 pc와 동일한 조건으로 코드를 실행할 수 있어서 오류를 줄일 수 있다. 또 여러 프로젝트를 동시에 하는 경우, 각각 독립된 가상환경을 사용하면 패키지 버전 충돌이 일어나지 않아 각자 필요한 버전을 쓰면 된다. 새로운 팀원이 들어왔을 때 가상환경을 생성하고requirements.txt를 설치하는 것만으로 동일한 개발 환경을 빠르게 구출할 수 있다.  
+
+
 ### 한계와 추가 확인 사항
 
 회사/기관 PC 정책, Python 버전 차이 등 현재 환경의 제약을 작성하세요.
 
+현재 3.13.15로 최신 버전인데, 강의 자료나 일부 라이브러리가 이보다 낮은 버전(예: 3.10, 3.11) 기준으로 작성되었을 경우 문법 차이나 미지원 패키지 문제가 발생할 가능성이 있다.
 ---
 
 ## 3. VS Code 인터프리터와 Jupyter 커널 연결
@@ -104,9 +124,9 @@ git version 2.55.0.windows.5
 ### 확인 결과
 
 ```text
-VS Code Python 인터프리터:
-Notebook sys.executable:
-Notebook Path.cwd():
+VS Code Python 인터프리터: .venv (3.13.15.final.0)
+Notebook sys.executable: C:\Users\관리자\llm-data-analysis-study\.venv\Scripts\python.exe
+Notebook Path.cwd(): C:\Users\관리자\llm-data-analysis-study\notebooks
 ```
 
 ### Evidence
